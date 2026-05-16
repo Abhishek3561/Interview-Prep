@@ -1,7 +1,9 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { useState } from "react";
 
-// 1. Define the Enum (Stays the same)
 enum CallStatus {
   INACTIVE = "INACTIVE",
   CONNECTING = "CONNECTING",
@@ -9,7 +11,6 @@ enum CallStatus {
   FINISHED = "FINISHED",
 }
 
-// 2. Add the missing TypeScript interface for props so Vercel doesn't crash
 interface AgentProps {
   userName: string;
   userId: string;
@@ -17,7 +18,7 @@ interface AgentProps {
 }
 
 const Agent = ({ userName }: AgentProps) => {
-  const callStatus: CallStatus = CallStatus.FINISHED
+  const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const isSpeaking = true;
   const messages = [
     'What is your name?',
