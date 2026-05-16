@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-
+// 1. Define the Enum (Stays the same)
 enum CallStatus {
   INACTIVE = "INACTIVE",
   CONNECTING = "CONNECTING",
@@ -9,14 +9,20 @@ enum CallStatus {
   FINISHED = "FINISHED",
 }
 
-const Agent = ({userName}: AgentProps) => {
-    const callStatus=CallStatus.FINISHED
-    const isSpeaking=true
-    const messages=[
-        'What is your name?',
-        'My Name is John Doe,nice to meet you'
-    ]
-    const lastMessage=messages[messages.length-1]
+// 2. Add the missing TypeScript interface for props so Vercel doesn't crash
+interface AgentProps {
+  userName: string;
+}
+
+const Agent = ({ userName }: AgentProps) => {
+  const callStatus = CallStatus.FINISHED;
+  const isSpeaking = true;
+  const messages = [
+    'What is your name?',
+    'My Name is John Doe, nice to meet you'
+  ];
+  const lastMessage = messages[messages.length - 1];
+
   return (
     <>
       <div className="call-view">
@@ -50,37 +56,40 @@ const Agent = ({userName}: AgentProps) => {
 
       {messages.length > 0 && (
         <div className="transcript-border">
-            <div className="transcript">
+          <div className="transcript">
             <p key={lastMessage}
               className={cn(
                 "transition-opacity duration-500 opacity-0",
                 "animate-fadeIn opacity-100"
               )}>
-                {lastMessage}
+              {lastMessage}
             </p>
-            </div>
+          </div>
         </div>
       )}
 
       <div className="w-full flex justify-center">
-        {callStatus !=="ACTIVE" ? (
-            <button className="relative btn-call">
-                <span 
-                 className={cn(
+        {/* FIX 1: Changed from !=="ACTIVE" to !== CallStatus.ACTIVE */}
+        {callStatus !== CallStatus.ACTIVE ? (
+          <button className="relative btn-call">
+            <span
+              className={cn(
                 "absolute animate-ping rounded-full opacity-75",
-                callStatus !== "CONNECTING" && "hidden"
+                /* FIX 2: Changed from !== "CONNECTING" to !== CallStatus.CONNECTING */
+                callStatus !== CallStatus.CONNECTING && "hidden"
               )}
-                />
+            />
 
-                <span className="relative">
-                    {callStatus==="INACTIVE" || callStatus === "FINISHED"
-                    ? "Call" : ". . ."}
-                </span>
-            </button>
-        ) :(
-            <button className="btn-disconnect">
-                End
-            </button>
+            <span className="relative">
+              {/* FIX 3: Changed string checks to CallStatus.INACTIVE and CallStatus.FINISHED */}
+              {callStatus === CallStatus.INACTIVE || callStatus === CallStatus.FINISHED
+                ? "Call" : ". . ."}
+            </span>
+          </button>
+        ) : (
+          <button className="btn-disconnect">
+            End
+          </button>
         )}
       </div>
     </>
