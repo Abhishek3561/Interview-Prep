@@ -12,6 +12,8 @@ enum CallStatus {
 // 2. Add the missing TypeScript interface for props so Vercel doesn't crash
 interface AgentProps {
   userName: string;
+  userId: string;
+  type: string;
 }
 
 const Agent = ({ userName }: AgentProps) => {
