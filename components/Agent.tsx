@@ -17,7 +17,7 @@ interface AgentProps {
 }
 
 const Agent = ({ userName }: AgentProps) => {
-  const callStatus = CallStatus.FINISHED;
+  const callStatus: CallStatus = CallStatus.FINISHED
   const isSpeaking = true;
   const messages = [
     'What is your name?',
